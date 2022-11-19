@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.lucianoortizsilva.csv.ReadCSV;
+import com.lucianoortizsilva.model.Platform;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,11 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @EnableScheduling
 public class ScheduleAmazon {
 
+	private static final long ONE_MINUTE = 60000;
+
 	@Async
-	@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = ONE_MINUTE)
 	public void toProcess() throws FileNotFoundException, IOException {
 		log.info("---------AMAZON----------");
-		try (var readFile = new ReadCSV("data_amazon_prime.csv", ",")) {
+		try (var readFile = new ReadCSV(Platform.AMAZON_PRIME, "data_amazon_prime.csv", ",")) {
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
 		} finally {
