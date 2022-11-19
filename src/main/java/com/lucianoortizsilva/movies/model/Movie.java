@@ -1,4 +1,4 @@
-package com.lucianoortizsilva.model;
+package com.lucianoortizsilva.movies.model;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.lucianoortizsilva.model;
+package com.lucianoortizsilva.movies.model;
 
 public enum Platform {
 

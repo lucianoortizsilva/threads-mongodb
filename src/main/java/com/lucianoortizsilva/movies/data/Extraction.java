@@ -1,38 +1,36 @@
-package com.lucianoortizsilva.csv;
+package com.lucianoortizsilva.movies.data;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
-
-import com.lucianoortizsilva.model.Movie;
-import com.lucianoortizsilva.model.Platform;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ReadCSV implements AutoCloseable {
+public class Extraction implements AutoCloseable {
 
 	private String filename;
-	private Platform platform;
 
 	@Getter
-	private List<String> dataAll = new ArrayList<>();
+	private List<String> data;
 
-	public ReadCSV(Platform platform, String filename, String splitBy) {
+	public Extraction(final String filename, final String splitBy) {
+		Objects.nonNull(filename);
+		Objects.nonNull(splitBy);
+		this.data = new ArrayList<>();
 		this.filename = filename;
-		this.platform = platform;
-		this.load();
-		this.transform();
+		this.loadData();
 	}
 
-	private void load() {
+	private void loadData() {
 		try {
 			final Path path = Path.of("src\\main\\resources\\csv", filename);
-			final List<String> data = Files.readAllLines(path);
-			for (final String lineOld : data) {
+			final List<String> dataOfFile = Files.readAllLines(path);
+			for (final String lineOld : dataOfFile) {
 				final StringTokenizer stringTokenizer = new StringTokenizer(lineOld, "\"\"", true);
 				final StringBuilder textByLine = new StringBuilder();
 				while (stringTokenizer.hasMoreTokens()) {
@@ -53,33 +51,12 @@ public class ReadCSV implements AutoCloseable {
 						textByLine.append(token.replace(",", ";"));
 					}
 				}
-				dataAll.add(textByLine.toString());
+				this.data.add(textByLine.toString());
 			}
 			log.info("Filename loaded with success: {}", filename);
 		} catch (final Exception e) {
 			var msg = String.format("Erro ao carregar arquivo: %s", filename);
 			throw new RuntimeException(msg, e);
-		}
-	}
-
-	private void transform() {
-		for (final String data : dataAll) {
-			final var line = data.split(";");
-			final Movie movie = Movie.builder()//
-					.id(line[0])//
-					.type(line[1])//
-					.title(line[2])//
-					.director(line[3])//
-					.cast(line[4])//
-					.country(line[5])//
-					.dtAdded(line[6])//
-					.releaseYear(line[7])//
-					.rating(line[8])//
-					.duration(line[9])//
-					.listedIn(line[10])//
-					.description(line[11])//
-					.platform(platform).build();//
-			System.out.println(movie);//
 		}
 	}
 
