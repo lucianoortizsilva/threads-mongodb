@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import com.lucianoortizsilva.movies.model.Movie;
-import com.lucianoortizsilva.movies.model.Platform;
+import com.lucianoortizsilva.movies.dto.MovieDTO;
+import com.lucianoortizsilva.movies.dto.Platform;
 
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ public class Transformation {
 	private List<String> data;
 
 	@Getter
-	private Collection<Movie> movies;
+	private Collection<MovieDTO> movies;
 
 	public Transformation(final Platform platform, final List<String> data) {
 		Objects.nonNull(platform);
@@ -30,7 +30,7 @@ public class Transformation {
 		this.movies = new LinkedList<>();
 		for (final String data : this.data) {
 			final var line = data.split(";");
-			final Movie movie = Movie.builder()//
+			final MovieDTO movie = MovieDTO.builder()//
 					.id(line[0])//
 					.type(line[1])//
 					.title(line[2])//

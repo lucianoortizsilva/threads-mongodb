@@ -1,12 +1,21 @@
 package com.lucianoortizsilva.movies.model;
 
-import lombok.Builder;
-import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@Builder
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "Movies")
 public class Movie {
 
+	@Id
 	private String id;
 	private String type;
 	private String title;
@@ -19,6 +28,6 @@ public class Movie {
 	private String duration;
 	private String listedIn;
 	private String description;
-	private Platform platform;
+	private String platform;
 
 }
