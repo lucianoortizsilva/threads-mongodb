@@ -16,14 +16,14 @@ import lombok.Setter;
 public class Movie {
 
 	@Id
-	private String id;
+	private Integer id;
 	private String type;
 	private String title;
 	private String director;
 	private String cast;
 	private String country;
 	private String dtAdded;
-	private String releaseYear;
+	private Integer releaseYear;
 	private String rating;
 	private String duration;
 	private String listedIn;

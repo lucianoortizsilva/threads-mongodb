@@ -24,26 +24,43 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class ScheduleAmazon {
 
-	private static final long ONE_MINUTE = 60000;
+	private static final long FIVE_MINUTE = 320000;
 
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Async
-	@Scheduled(fixedRate = ONE_MINUTE)
+	@Scheduled(fixedRate = FIVE_MINUTE)
 	public void toProcess() throws FileNotFoundException, IOException {
+		toProcessAmazonPrime();
+		toProcessNetflix();
+	}
+
+	private void toProcessAmazonPrime() {
 		log.info(">>> Starting Amazon Prime");
 		try (var extraction = new Extraction("data_amazon_prime.csv", ",")) {
-			final Transformation transform = new Transformation(Platform.AMAZON_PRIME, extraction.getData());
+			final Transformation transform = new Transformation(Platform.AMAZON_PRIME, extraction.getData(), 1);
 			final List<MovieDTO> dtos = transform.getMovies().stream().collect(Collectors.toList());
 			dtos.forEach(dto -> {
 				movieRepository.save(dto.ToEntity());
 			});
+			log.info(">>> Finished Amazon Prime\n");
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
-		} finally {
-			log.info(">>> Finished Amazon Prime\n");
 		}
 	}
 
+	private void toProcessNetflix() {
+		log.info(">>> Starting Netflix");
+		try (var extraction = new Extraction("data_netflix.csv", ",")) {
+			final Transformation transform = new Transformation(Platform.NETFLIX, extraction.getData(), 10000);
+			final List<MovieDTO> dtos = transform.getMovies().stream().collect(Collectors.toList());
+			dtos.forEach(dto -> {
+				movieRepository.save(dto.ToEntity());
+			});
+			log.info(">>> Finished Netflix \n");
+		} catch (final Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 }

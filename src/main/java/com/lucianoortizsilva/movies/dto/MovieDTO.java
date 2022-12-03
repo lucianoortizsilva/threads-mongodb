@@ -25,19 +25,23 @@ public class MovieDTO {
 
 	public Movie ToEntity() {
 		Movie movie = new Movie();
-		movie.setId(id);
+		movie.setId(Integer.parseInt(id));
 		movie.setType(type);
 		movie.setTitle(title);
 		movie.setDirector(director);
 		movie.setCast(cast);
-		movie.setCountry(country);
+		movie.setCountry(country.isEmpty() ? "Undefined" : country);
 		movie.setDtAdded(dtAdded);
-		movie.setReleaseYear(releaseYear);
 		movie.setRating(rating);
 		movie.setDuration(duration);
 		movie.setListedIn(listedIn);
 		movie.setDescription(description);
 		movie.setPlatform(platform.name());
+		try {
+			movie.setReleaseYear(Integer.valueOf(releaseYear.trim()));
+		} catch (Exception e) {
+			movie.setReleaseYear(null);
+		}
 		return movie;
 	}
 

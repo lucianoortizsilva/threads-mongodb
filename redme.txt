@@ -1,0 +1,1 @@
+https://grafana.com/blog/2020/11/02/introducing-the-mongodb-enterprise-plugin-for-grafana/
