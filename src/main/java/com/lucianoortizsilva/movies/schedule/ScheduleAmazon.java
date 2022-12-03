@@ -3,6 +3,9 @@ package com.lucianoortizsilva.movies.schedule;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +32,19 @@ public class ScheduleAmazon {
 	@Autowired
 	private MovieRepository movieRepository;
 
+	private ExecutorService executorService = Executors.newFixedThreadPool(2);
+
 	@Async
 	@Scheduled(fixedRate = FIVE_MINUTE)
-	public void toProcess() throws FileNotFoundException, IOException {
-		toProcessAmazonPrime();
-		toProcessNetflix();
+	public void toProcess() throws FileNotFoundException, IOException, InterruptedException, ExecutionException {
+
+		executorService.submit(() -> {
+			toProcessAmazonPrime();
+		});
+
+		executorService.submit(() -> {
+			toProcessNetflix();
+		});
 	}
 
 	private void toProcessAmazonPrime() {
@@ -44,7 +55,7 @@ public class ScheduleAmazon {
 			dtos.forEach(dto -> {
 				movieRepository.save(dto.ToEntity());
 			});
-			log.info(">>> Finished Amazon Prime\n");
+			log.info(">>> Finished Amazon Prime");
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -58,9 +69,10 @@ public class ScheduleAmazon {
 			dtos.forEach(dto -> {
 				movieRepository.save(dto.ToEntity());
 			});
-			log.info(">>> Finished Netflix \n");
+			log.info(">>> Finished Netflix");
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
 		}
 	}
+
 }
