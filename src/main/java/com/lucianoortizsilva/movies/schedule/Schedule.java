@@ -25,14 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @EnableAsync
 @Configuration
-public class ScheduleAmazon {
+public class Schedule {
 
 	private static final long FIVE_MINUTE = 320000;
 
 	@Autowired
 	private MovieRepository movieRepository;
 
-	private ExecutorService executorService = Executors.newFixedThreadPool(2);
+	private ExecutorService executorService = Executors.newFixedThreadPool(3);
 
 	@Async
 	@Scheduled(fixedRate = FIVE_MINUTE)
@@ -45,6 +45,25 @@ public class ScheduleAmazon {
 		executorService.submit(() -> {
 			toProcessNetflix();
 		});
+
+		executorService.submit(() -> {
+			toProcessDisney();
+		});
+	}
+
+	private void toProcessDisney() {
+		log.info(">>> Starting Diney");
+		try (var extraction = new Extraction("data_disney.csv", ",")) {
+			final Transformation transform = new Transformation(Platform.DISNEY, extraction.getData(), 20000);
+			final List<MovieDTO> dtos = transform.getMovies().stream().collect(Collectors.toList());
+			dtos.forEach(dto -> {
+				movieRepository.save(dto.ToEntity());
+			});
+		} catch (final Exception e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			log.info(">>> Finished Disney");
+		}
 	}
 
 	private void toProcessAmazonPrime() {
@@ -55,9 +74,10 @@ public class ScheduleAmazon {
 			dtos.forEach(dto -> {
 				movieRepository.save(dto.ToEntity());
 			});
-			log.info(">>> Finished Amazon Prime");
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
+		} finally {
+			log.info(">>> Finished Amazon Prime");
 		}
 	}
 
@@ -69,9 +89,10 @@ public class ScheduleAmazon {
 			dtos.forEach(dto -> {
 				movieRepository.save(dto.ToEntity());
 			});
-			log.info(">>> Finished Netflix");
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
+		} finally {
+			log.info(">>> Finished Netflix");
 		}
 	}
 

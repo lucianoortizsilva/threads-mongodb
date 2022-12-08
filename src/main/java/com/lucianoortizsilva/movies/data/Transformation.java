@@ -33,19 +33,20 @@ public class Transformation {
 		for (final String data : this.data) {
 			final var line = data.split(";");
 			final var lineLength = line.length;
+			System.out.println(initialId);
 			final MovieDTO movie = MovieDTO.builder()//
 					.id(String.valueOf(initialId))//
-					.type(lineLength >= 1 ? line[1] : "")//
-					.title(lineLength >= 2 ? line[2] : "")//
-					.director(lineLength >= 3 ? line[3] : "")//
-					.cast(lineLength >= 4 ? line[4] : "")//
-					.country(lineLength >= 5 ? line[5] : "")//
-					.dtAdded(lineLength >= 6 ? line[6] : "")//
-					.releaseYear(lineLength >= 7 ? line[7] : "")//
-					.rating(lineLength >= 8 ? line[8] : "")//
-					.duration(lineLength >= 9 ? line[9] : "")//
-					.listedIn(lineLength >= 10 ? line[10] : "")//
-					.description(lineLength >= 11 ? line[11] : "")//
+					.type(lineLength > 1 ? line[1] : "")//
+					.title(lineLength > 2 ? line[2] : "")//
+					.director(lineLength > 3 ? line[3] : "")//
+					.cast(lineLength > 4 ? line[4] : "")//
+					.country(lineLength > 5 ? line[5] : "")//
+					.dtAdded(lineLength > 6 ? line[6] : "")//
+					.releaseYear(lineLength > 7 ? line[7] : "")//
+					.rating(lineLength > 8 ? line[8] : "")//
+					.duration(lineLength > 9 ? line[9] : "")//
+					.listedIn(lineLength > 10 ? line[10] : "")//
+					.description(lineLength > 11 ? line[11] : "")//
 					.platform(this.platform).build();//
 			this.movies.add(movie);
 			initialId++;
