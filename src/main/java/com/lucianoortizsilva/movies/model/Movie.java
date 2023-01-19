@@ -28,6 +28,5 @@ public class Movie {
 	private String duration;
 	private String listedIn;
 	private String description;
-	private String platform;
 
 }

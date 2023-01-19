@@ -21,7 +21,6 @@ public class MovieDTO {
 	private String duration;
 	private String listedIn;
 	private String description;
-	private Platform platform;
 
 	public Movie ToEntity() {
 		Movie movie = new Movie();
@@ -36,7 +35,6 @@ public class MovieDTO {
 		movie.setDuration(duration);
 		movie.setListedIn(listedIn);
 		movie.setDescription(description);
-		movie.setPlatform(platform.name());
 		try {
 			movie.setReleaseYear(Integer.valueOf(releaseYear.trim()));
 		} catch (Exception e) {
