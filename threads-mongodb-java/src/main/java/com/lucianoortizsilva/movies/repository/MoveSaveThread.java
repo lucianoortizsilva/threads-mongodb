@@ -25,7 +25,7 @@ public class MoveSaveThread extends Thread {
 
 	@Override
 	public void run() {
-		log.info("CurrentThread: [{}] - Lines range: [{}]-[{}]", Thread.currentThread().getName(), (firstIndex + 1), lastIndex);
+		log.info("CurrentThread: [{}] - Lines range: [{}]-[{}]", Thread.currentThread().getName(), firstIndex, (lastIndex -1));
 		final List<Movie> list = IntStream.range(firstIndex, lastIndex).mapToObj(i -> movies.get((i))).collect(Collectors.toList());
 		this.movieRepository.saveAll(list);
 	}
