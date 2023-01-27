@@ -9,7 +9,7 @@ logging.basicConfig(format='%(levelname)s %(asctime)s:%(message)s', datefmt='%d/
 
 # https://wellsr.com/python/python-multithreading-run-functions-in-parallel/
 
-qtd_threads = 10
+qtd_threads = 3
 all_threads = []
 
 
@@ -39,7 +39,8 @@ if __name__ == '__main__':
                    'listedIn', 'description']
         df_1 = pd.read_csv('csv/data-01.csv', header=None, names=columns, delimiter=';')
         df_2 = pd.read_csv('csv/data-02.csv', header=None, names=columns, delimiter=';')
-        union_dfs = pd.concat([df_1, df_2])
+        df_3 = pd.read_csv('csv/data-03.csv', header=None, names=columns, delimiter=';')
+        union_dfs = pd.concat([df_1, df_2, df_3])
         print('read file - end')
 
         print('----------------')
