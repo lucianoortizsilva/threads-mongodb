@@ -9,7 +9,7 @@ logging.basicConfig(format='%(levelname)s %(asctime)s:%(message)s', datefmt='%d/
 
 # https://wellsr.com/python/python-multithreading-run-functions-in-parallel/
 
-qtd_threads = 3
+qtd_threads = 4
 all_threads = []
 
 
@@ -69,13 +69,13 @@ if __name__ == '__main__':
                     last_index = last_index + diff
                 obj = SaveMoveThread(name='Thread name: ' + str(count_tasks))
                 if first_index == last_index:
-                    logging.warning('Threads Desejadas: %s - Threads Criadas: %s', str(qtd_threads), str(count_tasks))
+                    logging.warning('Threads Desejadas: %s - Threads Criadas: %s', str(qtd_threads), str(count_tasks-1))
                     break
                 my_thread = threading.Thread(target=obj.run, args=(movies, int(first_index), int(last_index)))
                 all_threads.append(my_thread)
                 first_index = last_index
                 last_index += quantity_index_by_thread
-                count_tasks += count_tasks
+                count_tasks += 1
         except Exception as e:
             logging.error(e)
         print('create threads object - end')

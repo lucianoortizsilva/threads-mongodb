@@ -14,8 +14,7 @@ class SaveMoveThread(Thread):
         pass
 
     def run(self, movies, first_index, last_index):
-        logging.info('Current Thread: %s, Range Index: [%s-%s]', threading.currentThread().getName(), str(first_index),
-                     str(last_index - 1))
+        logging.info('Current Thread: %s, Range Index: [%s-%s]', threading.currentThread().getName(), str(first_index), str(last_index - 1))
         try:
             movies_selecteds_by_index = [movies[i] for i in range(first_index, last_index)]
             for m in movies_selecteds_by_index:
