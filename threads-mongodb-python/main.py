@@ -40,7 +40,8 @@ if __name__ == '__main__':
         df_1 = pd.read_csv('csv/data-01.csv', header=None, names=columns, delimiter=';')
         df_2 = pd.read_csv('csv/data-02.csv', header=None, names=columns, delimiter=';')
         df_3 = pd.read_csv('csv/data-03.csv', header=None, names=columns, delimiter=';')
-        union_dfs = pd.concat([df_1, df_2, df_3])
+        df_4 = pd.read_csv('csv/data-04.csv', header=None, names=columns, delimiter=';')
+        union_dfs = pd.concat([df_1, df_2, df_3, df_4])
         print('read file - end')
 
         print('----------------')
